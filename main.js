@@ -166,10 +166,10 @@ sizeInput.on('change', function(ev) {
   //clear last cube array and its objs
   //initCubeArray();
 });
-const colorInput = pane.addInput(field, 'color', {
+const colorInput = automataControls.addInput(field, 'color', {
   view: 'color',
   picker: 'inline',
-  expanded: true,
+  expanded: false,
   label: "Color",
 });
 colorInput.on('change', function(ev) {
@@ -181,7 +181,8 @@ colorInput.on('change', function(ev) {
 });
 
 const camControls = pane.addFolder({
-  title: "Camera Controls"
+  title: "Camera Controls",
+  expanded: false,
 });
 camControls.addInput(renderer, 'toneMappingExposure', {
   label: "Exposure",
