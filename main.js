@@ -4,7 +4,7 @@ import { GUI } from 'dat.gui'
 
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+  var material = new THREE.MeshBasicMaterial( { color: 0x0000ff});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
@@ -13,9 +13,17 @@ function initCube(x,y,z){
   outlineMesh.position.set(cube.position.x,cube.position.y,cube.position.z);
   outlineMesh.scale.multiplyScalar(1.1);
   scene.add( outlineMesh );
-  return { cube, outlineMesh };
-
+  var obj = {
+    cubehandle: cube,
+    outlinehandle: outlineMesh
+  };
+  return obj;
 }
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -30,7 +38,6 @@ const controls = new OrbitControls( camera, renderer.domElement );
 var n = 10;
 
 var cubeGrid = new Array();
-
 var cubeArray = new Array();
 for (let x = 0; x < n; x++){
   cubeGrid[x] = new Array();
@@ -41,13 +48,9 @@ for (let x = 0; x < n; x++){
     for (let z = 0; z < n; z++){
       cubeGrid[x][y][z] = 0;
 
-      let {cubeobj, outlineobj} = initCube(x,y,z)
+      let cubeobj = initCube(x,y,z)
 
-      const cell = {
-        cube: cubeobj,
-        outlinemesh: outlineobj,
-      };
-      cubeArray[x][y][z] = cell;
+      cubeArray[x][y][z] = cubeobj;
 
 
     }
@@ -82,5 +85,10 @@ function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
+  var x = getRandomInt(n);
+  var y = getRandomInt(n);
+  var z = getRandomInt(n);
+  cubeArray[x][y][z].cubehandle.visible = false;
+  cubeArray[x][y][z].outlinehandle.visible = false;
 }
 animate();
