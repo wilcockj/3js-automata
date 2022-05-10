@@ -15,7 +15,7 @@ The 5 means each cell has 5 total states it can be in (state 4 for newly born wh
 M means a Moore neighborhood.*/
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshStandardMaterial({ color: 0x040404, roughness: 0.5});
+  var material = new THREE.MeshStandardMaterial({ color: 0xba5504, roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
@@ -92,7 +92,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1;
+renderer.toneMappingExposure = 1.3;
 renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -100,7 +100,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 15};
+var field = {size: 7};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
