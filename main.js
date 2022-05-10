@@ -15,14 +15,15 @@ function initCube(x,y,z){
   outlineMesh.scale.multiplyScalar(1.1);
   scene.add( outlineMesh );
   return { cube, outlineMesh };
-
 }
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-
 const scene = new THREE.Scene();
+const renderer = new THREE.WebGLRenderer({ 
+  antialias: true,
+  canvas: document.querySelector('#bg'),
+});
+renderer.setPixelRatio(window.devicePixelRation);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
