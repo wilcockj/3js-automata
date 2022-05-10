@@ -55,7 +55,7 @@ function checkNeighbors(cubeGrid,x,y,z){
     var cury = parseInt(y) + ny;
     var curz = parseInt(z) + nz;
     if(inRange(0,field.size,curx) && inRange(0, field.size, cury) && inRange(0, field.size, curz)){
-      console.log(cubeGrid[curx][cury][curz]);
+      //console.log(cubeGrid[curx][cury][curz]);
       count += cubeGrid[curx][cury][curz];
     }
   }
@@ -68,7 +68,7 @@ function updateGrid(cubeGrid){
     for (var y in cubeGrid[x]){
       for (var z in cubeGrid[x][y]){
         var count = checkNeighbors(cubeGrid, x, y, z);
-        console.log(count);
+        //console.log(count);
         }
       }
   }
