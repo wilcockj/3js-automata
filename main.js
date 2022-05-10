@@ -18,17 +18,9 @@ function initCube(x,y,z){
   var material = new THREE.MeshStandardMaterial({ color: 0xba5504, roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
-  cube.position.set(x,y,z)
-  /*
-  var outlineMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.BackSide } );
-  var outlineMesh = new THREE.Mesh( geometry, outlineMaterial );
-  outlineMesh.position.set(cube.position.x,cube.position.y,cube.position.z);
-  outlineMesh.scale.multiplyScalar(1.1);
-  scene.add( outlineMesh );
-  */
+  cube.position.set(x,y,z);
   var obj = {
     cubehandle: cube
-    //outlinehandle: outlineMesh
   };
   return obj;
 }
@@ -56,7 +48,6 @@ function checkNeighbors(cubeGrid,x,y,z){
     var cury = parseInt(y) + ny;
     var curz = parseInt(z) + nz;
     if(inRange(0,field.size,curx) && inRange(0, field.size, cury) && inRange(0, field.size, curz)){
-      //console.log(cubeGrid[curx][cury][curz]);
       count += cubeGrid[curx][cury][curz];
     }
   }
@@ -96,6 +87,7 @@ renderer.toneMappingExposure = 1.3;
 renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+camera.position.set( 0, 20, 20 );
 scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
@@ -113,19 +105,12 @@ for (let x = 0; x < field.size; x++){
     for (let z = 0; z < field.size; z++){
       var cellstate = Math.round(Math.random());
       cubeGrid[x][y][z] = cellstate;
-
       let cubeobj = initCube(x,y,z)
-
       cubeArray[x][y][z] = cubeobj;
-
     }
   }
 }
 updateGrid(cubeGrid);
-
-//controls.update() must be called after any manual changes to the camera's transform
-camera.position.set( 0, 20, 20 );
-controls.update();
 
 //event listener for window resize
 window.addEventListener( 'resize', onWindowResize, false );
@@ -178,10 +163,10 @@ function animate() {
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
   if (cubeArray[x][y][z].cubehandle.visible){
-  cubeArray[x][y][z].cubehandle.visible = false;
+    cubeArray[x][y][z].cubehandle.visible = false;
   }
   else{
-  cubeArray[x][y][z].cubehandle.visible = true;
+    cubeArray[x][y][z].cubehandle.visible = true;
   }
   fpsGraph.end();
 }
