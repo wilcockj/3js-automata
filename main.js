@@ -168,6 +168,8 @@ sizeInput.on('change', function(ev) {
 });
 const colorInput = pane.addInput(field, 'color', {
   view: 'color',
+  picker: 'inline',
+  expanded: true,
   label: "Color",
 });
 colorInput.on('change', function(ev) {
