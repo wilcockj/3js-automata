@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
+import './style.css'
 
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
