@@ -11,14 +11,16 @@ function initCube(x,y,z){
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
+  /*
   var outlineMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.BackSide } );
   var outlineMesh = new THREE.Mesh( geometry, outlineMaterial );
   outlineMesh.position.set(cube.position.x,cube.position.y,cube.position.z);
   outlineMesh.scale.multiplyScalar(1.1);
   scene.add( outlineMesh );
+  */
   var obj = {
-    cubehandle: cube,
-    outlinehandle: outlineMesh
+    cubehandle: cube
+    //outlinehandle: outlineMesh
   };
   return obj;
 }
@@ -100,11 +102,9 @@ function animate() {
   var z = getRandomInt(field.size);
   if (cubeArray[x][y][z].cubehandle.visible){
   cubeArray[x][y][z].cubehandle.visible = false;
-  cubeArray[x][y][z].outlinehandle.visible = false;
   }
   else{
   cubeArray[x][y][z].cubehandle.visible = true;
-  cubeArray[x][y][z].outlinehandle.visible = true;
   }
   stats.end()
 }
