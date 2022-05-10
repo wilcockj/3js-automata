@@ -71,8 +71,7 @@ console.log(neighbors)
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 20 );
 controls.update();
-loader.load( 'models/led.gltf', function ( gltf ) {
-
+loader.load( 'models/gameboy2.gltf', function ( gltf ) {
 	scene.add( gltf.scene );
 
 }, undefined, function ( error ) {
