@@ -30,6 +30,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 var defaultFieldSize = 10;
 var field = {size: defaultFieldSize};
 
+var cubeGrid = new Array();
 var cubeArray = new Array();
 for (let x = 0; x < field.size; x++){
   cubeGrid[x] = new Array();
