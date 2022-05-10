@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
@@ -29,7 +28,6 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-const loader = new GLTFLoader();
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
@@ -46,7 +44,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7};
+var field = {size: 5};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
