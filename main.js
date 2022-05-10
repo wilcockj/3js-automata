@@ -15,6 +15,12 @@ var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
 var cube1 = new THREE.Mesh( geometry, material );
 scene.add( cube1 );
 cube1.position.set(0,1,0)
+var outlineMaterial1 = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
+var outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial1 );
+outlineMesh1.position.set(cube1.position.x,cube1.position.y,cube1.position.z);
+outlineMesh1.scale.multiplyScalar(1.05);
+scene.add( outlineMesh1 );
+
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 100 );
 controls.update();
