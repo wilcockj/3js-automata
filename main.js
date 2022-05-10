@@ -6,11 +6,11 @@ import './style.css'
 
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshBasicMaterial( { color: 0x0000ff});
+  var material = new THREE.MeshPhongMaterial( { color: 0xff00ff});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
-  var outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
+  var outlineMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.BackSide } );
   var outlineMesh = new THREE.Mesh( geometry, outlineMaterial );
   outlineMesh.position.set(cube.position.x,cube.position.y,cube.position.z);
   outlineMesh.scale.multiplyScalar(1.1);
@@ -37,9 +37,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
+var light = new THREE.HemisphereLight(0xFFFFFF, 0x040404, 0.7);
+scene.add(light);
+
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 5};
+var field = {size: 7};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
