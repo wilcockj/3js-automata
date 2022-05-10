@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
@@ -26,7 +27,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-
+const loader = new GLTFLoader();
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
@@ -71,6 +72,15 @@ console.log(neighbors)
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 20 );
 controls.update();
+loader.load( 'models/led.gltf', function ( gltf ) {
+
+	scene.add( gltf.scene );
+
+}, undefined, function ( error ) {
+
+	console.error( error );
+
+} );
 
 //event listener for window resize
 window.addEventListener( 'resize', onWindowResize, false );
