@@ -36,9 +36,10 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-
-var light = new THREE.HemisphereLight(0xFFFFFF, 0x040404, 0.7);
-scene.add(light);
+var pointLight = new THREE.PointLight( 0xffffff );
+pointLight.position.set(1,1,2);
+camera.add(pointLight);
+scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
