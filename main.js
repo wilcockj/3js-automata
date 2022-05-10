@@ -76,6 +76,33 @@ function updateGrid(cubeGrid){
 
 }
 
+function initCubeArray(){
+  var cubeGrid = new Array();
+  var cubeArray = new Array();
+  for (let x = 0; x < field.size; x++){
+    cubeGrid[x] = new Array();
+    cubeArray[x] = new Array();
+    for (let y = 0; y < field.size ; y++){
+      cubeGrid[x][y] = new Array();
+      cubeArray[x][y] = new Array();
+      for (let z = 0; z < field.size; z++){
+        var cellstate = Math.round(Math.random());
+        cubeGrid[x][y][z] = cellstate;
+
+        let cubeobj = initCube(x,y,z)
+
+        cubeArray[x][y][z] = cubeobj;
+
+      }
+    }
+  }
+  var obj = {
+    cubeGrid: cubeGrid,
+    cubeArray: cubeArray
+  };
+  return obj;
+}
+
 const loader = new RGBELoader();
 loader.load( hdr, function ( texture ) {
   texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -102,25 +129,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 
 var field = {size: 7};
 
-var cubeGrid = new Array();
-var cubeArray = new Array();
-for (let x = 0; x < field.size; x++){
-  cubeGrid[x] = new Array();
-  cubeArray[x] = new Array();
-  for (let y = 0; y < field.size ; y++){
-    cubeGrid[x][y] = new Array();
-    cubeArray[x][y] = new Array();
-    for (let z = 0; z < field.size; z++){
-      var cellstate = Math.round(Math.random());
-      cubeGrid[x][y][z] = cellstate;
-
-      let cubeobj = initCube(x,y,z)
-
-      cubeArray[x][y][z] = cubeobj;
-
-    }
-  }
-}
+var {cubeGrid,cubeArray} = initCubeArray();
 updateGrid(cubeGrid);
 
 //controls.update() must be called after any manual changes to the camera's transform
