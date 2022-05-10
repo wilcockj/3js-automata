@@ -96,8 +96,14 @@ function animate() {
   var x = getRandomInt(field.size);
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
+  if (cubeArray[x][y][z].cubehandle.visible){
   cubeArray[x][y][z].cubehandle.visible = false;
   cubeArray[x][y][z].outlinehandle.visible = false;
+  }
+  else{
+  cubeArray[x][y][z].cubehandle.visible = true;
+  cubeArray[x][y][z].outlinehandle.visible = true;
+  }
   stats.end()
 }
 animate();
