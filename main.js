@@ -89,6 +89,19 @@ pointLight.position.set(1,1,2);
 camera.add(pointLight);
 scene.add(camera);
 
+new RGBELoader()
+					.setPath( '.' )
+					.load( 'envmap.hdr', function ( texture ) {
+
+						texture.mapping = THREE.EquirectangularReflectionMapping;
+
+						scene.background = texture;
+						scene.environment = texture;
+
+						render();
+
+					} );
+
 const light = new THREE.AmbientLight( 0x404040 ); // soft white light
 scene.add( light );
 
