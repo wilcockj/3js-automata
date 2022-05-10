@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GUI } from 'dat.gui'
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -34,11 +35,15 @@ function onWindowResize(){
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function animate() {
+const gui = new GUI();
+const mainFolder = gui.addFolder('Controls');
+var field = {size: 10}
+mainFolder.add(field, 'size', 1, 50);
+mainFolder.open();
 
+function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
-
 }
 animate();
