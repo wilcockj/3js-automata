@@ -4,7 +4,7 @@ import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import hdr from './envmap.hdr?url';
 
 // TODO colors based on distance from center
 // need to do CA rules as discussed here https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
@@ -77,8 +77,7 @@ function updateGrid(cubeGrid){
 }
 
 const loader = new RGBELoader();
-loader.load( 'envmap.hdr', function ( texture ) {
-
+loader.load( hdr, function ( texture ) {
   texture.mapping = THREE.EquirectangularReflectionMapping;
   scene.background = texture;
   scene.environment = texture;
@@ -137,9 +136,13 @@ function onWindowResize(){
 }
 
 const gui = new GUI();
-const mainFolder = gui.addFolder('Controls');
-mainFolder.add(field, 'size', 1, 50, 1);
-mainFolder.open();
+const automataFolder = gui.addFolder('Automata Controls');
+automataFolder.add(field, 'size', 1, 50, 1);
+automataFolder.open();
+const cameraFolder = gui.addFolder('Camera Controls');
+cameraFolder.add(renderer, 'toneMappingExposure', 0, 2);
+cameraFolder.add(camera, 'fov', 20, 120, 1)
+cameraFolder.open();
 
 const stats = new Stats()
 stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -147,6 +150,7 @@ document.body.appendChild(stats.dom)
 
 function animate() {
   stats.begin()
+  camera.updateProjectionMatrix();
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
