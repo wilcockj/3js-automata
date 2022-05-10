@@ -6,7 +6,7 @@ import './style.css'
 
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshBasicMaterial( { color: 0x0000ff});
+  var material = new THREE.MeshToonMaterial( { color: 0x0000ff});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
@@ -93,8 +93,14 @@ function animate() {
   var x = getRandomInt(field.size);
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
+  if (cubeArray[x][y][z].cubehandle.visible){
   cubeArray[x][y][z].cubehandle.visible = false;
   cubeArray[x][y][z].outlinehandle.visible = false;
+  }
+  else{
+  cubeArray[x][y][z].cubehandle.visible = true;
+  cubeArray[x][y][z].outlinehandle.visible = true;
+  }
   stats.end()
 }
 animate();
