@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GUI } from 'dat.gui'
+import Stats from 'stats.js'
 
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -73,9 +74,15 @@ const mainFolder = gui.addFolder('Controls');
 mainFolder.add(field, 'size', 1, 50, 1);
 mainFolder.open();
 
+const stats = new Stats()
+stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild(stats.dom)
+
 function animate() {
+  stats.begin()
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
+  stats.end()
 }
 animate();
