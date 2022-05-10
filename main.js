@@ -19,10 +19,7 @@ function initCube(x,y,z){
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z);
-  var obj = {
-    cubehandle: cube
-  };
-  return obj;
+  return cube.uuid;
 }
 
 function getRandomInt(max) {
@@ -94,6 +91,21 @@ function initCubeArray(){
   return obj;
 }
 
+function deleteCubeArray(cubeArray){
+  for (var x in cubeArray){
+    for (var y in cubeArray){
+      for (var z in cubeArray){
+        const obj = scene.getObjectByProperty('uuid', cubeArray[x][y][z]);
+        obj.geometry.dispose();
+        obj.material.dispose();
+        scene.remove(obj)
+        }
+      }
+  }
+
+}
+
+
 const loader = new RGBELoader();
 loader.load( hdr, function ( texture ) {
   texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -122,6 +134,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 var field = {size: 7};
 
 var {cubeGrid,cubeArray} = initCubeArray();
+console.log(cubeArray);
 updateGrid(cubeGrid);
 
 //event listener for window resize
@@ -171,6 +184,7 @@ function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
+  /*
   var x = getRandomInt(field.size);
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
@@ -180,6 +194,7 @@ function animate() {
   else{
     cubeArray[x][y][z].cubehandle.visible = true;
   }
+  */
   fpsGraph.end();
 }
 animate();
