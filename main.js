@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
+import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js';
+
 // TODO colors based on distance from center
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
