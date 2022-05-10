@@ -13,7 +13,9 @@
     "vite": "^2.9.7"
   },
   "dependencies": {
+    "@tweakpane/plugin-essentials": "^0.1.4",
     "stats.js": "^0.17.0",
-    "three": "^0.140.1"
+    "three": "^0.140.1",
+    "tweakpane": "^3.0.8"
   }
 }

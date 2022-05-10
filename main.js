@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GUI } from 'dat.gui'
-import Stats from 'stats.js'
 import './style.css'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import hdr from './envmap.hdr?url';
+import {Pane} from 'tweakpane';
+import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
 // TODO colors based on distance from center
 // need to do CA rules as discussed here https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
@@ -135,21 +135,41 @@ function onWindowResize(){
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-const gui = new GUI();
-const automataFolder = gui.addFolder('Automata Controls');
-automataFolder.add(field, 'size', 1, 50, 1);
-automataFolder.open();
-const cameraFolder = gui.addFolder('Camera Controls');
-cameraFolder.add(renderer, 'toneMappingExposure', 0, 2);
-cameraFolder.add(camera, 'fov', 20, 120, 1)
-cameraFolder.open();
+const pane = new Pane();
+pane.registerPlugin(EssentialsPlugin);
+const fpsGraph = pane.addBlade({
+  view: 'fpsgraph',
+  label: 'FPS',
+});
 
-const stats = new Stats()
-stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(stats.dom)
+const automataControls = pane.addFolder({
+  title: "Automata Controls"
+});
+automataControls.addInput(field, 'size', {
+  label: "Size",
+  min: 5,
+  max: 30,
+  step: 1,
+});
+
+const camControls = pane.addFolder({
+  title: "Camera Controls"
+});
+camControls.addInput(renderer, 'toneMappingExposure', {
+  label: "Exposure",
+  min: 0,
+  max: 3,
+  step: 0.1,
+});
+camControls.addInput(camera, 'fov', {
+  label: "FOV",
+  min: 20,
+  max: 120,
+  step: 1,
+});
 
 function animate() {
-  stats.begin()
+  fpsGraph.begin();
   camera.updateProjectionMatrix();
 	requestAnimationFrame( animate );
 	controls.update();
@@ -163,6 +183,6 @@ function animate() {
   else{
   cubeArray[x][y][z].cubehandle.visible = true;
   }
-  stats.end()
+  fpsGraph.end();
 }
 animate();
