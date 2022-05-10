@@ -100,7 +100,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 5};
+var field = {size: 15};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
