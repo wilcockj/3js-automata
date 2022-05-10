@@ -12,6 +12,24 @@ const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.inner
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
+var n = 10;
+
+var cubeArray = new Array();
+
+for (let x = 0; x < n; x++){
+  cubeArray[x] = new Array();
+  for (let y = 0; y < n ; y++){
+    cubeArray[x][y] = new Array();
+    for (let z = 0; z < n; z++){
+      cubeArray[x][y][z] = 0;
+    }
+  }
+}
+
+var neighbors = [[-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, -1], [-1, 0, 0], [-1, 0, 1], [-1, 1, -1], [-1, 1, 0], [-1, 1, 1], [0, -1, -1], [0, -1, 0], [0, -1, 1], [0, 0, -1], [0, 0, 1], [0, 1, -1], [0, 1, 0], [0, 1, 1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [1, 0, -1], [1, 0, 0], [1, 0, 1], [1, 1, -1], [1, 1, 0], [1, 1, 1]]
+console.log(cubeArray)
+console.log(neighbors)
+
 var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
 var cube1 = new THREE.Mesh( geometry, material );
