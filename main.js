@@ -44,9 +44,12 @@ pointLight.position.set(1,1,2);
 camera.add(pointLight);
 scene.add(camera);
 
+const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
+
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7};
+var field = {size: 10};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
