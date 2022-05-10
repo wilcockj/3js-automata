@@ -6,6 +6,12 @@ import './style.css'
 import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js';
 
 // TODO colors based on distance from center
+// need to do CA rules as discussed here https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
+/*Rule 445 is the first rule in the video and shown as 4/4/5/M. This is fairly standard survival/birth CA syntax.
+The first 4 indicates that a state 1 cell survives if it has 4 neighbor cells.
+The second 4 indicates that a cell is born in an empty location if it has 4 neighbors.
+The 5 means each cell has 5 total states it can be in (state 4 for newly born which then fades to state 1 and then state 0 for no cell)
+M means a Moore neighborhood.*/
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
   var material = new THREE.MeshPhongMaterial( { color: 0xff00ff});
@@ -30,12 +36,43 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function updateGrid(cubeGrid){
+function inRange(min,max,num){
+  if (num < max && num >= min){
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}
+
+function checkNeighbors(cubeGrid,x,y,z){
   var neighbors = [[-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, -1], [-1, 0, 0], [-1, 0, 1], [-1, 1, -1], [-1, 1, 0], [-1, 1, 1], [0, -1, -1], [0, -1, 0], [0, -1, 1], [0, 0, -1], [0, 0, 1], [0, 1, -1], [0, 1, 0], [0, 1, 1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [1, 0, -1], [1, 0, 0], [1, 0, 1], [1, 1, -1], [1, 1, 0], [1, 1, 1]];
+  var count = 0;
+  for (var n in neighbors){
+
+    var [nx,ny,nz] = [neighbors[n][0],neighbors[n][1],neighbors[n][2]];
+    var curx = parseInt(x) + nx;
+    var cury = parseInt(y) + ny;
+    var curz = parseInt(z) + nz;
+    if(inRange(0,field.size,curx) && inRange(0, field.size, cury) && inRange(0, field.size, curz)){
+      console.log(cubeGrid[curx][cury][curz]);
+      count += cubeGrid[curx][cury][curz];
+    }
+  }
+  return count
+}
+
+function updateGrid(cubeGrid){
   var arrcopy = Array.from(cubeGrid);
-  for (var x in neighbors){
-    console.log(neighbors[x]);
-  }  
+  for (var x in cubeGrid){
+    for (var y in cubeGrid[x]){
+      for (var z in cubeGrid[x][y]){
+        var count = checkNeighbors(cubeGrid, x, y, z);
+        console.log(count);
+        }
+      }
+  }
+
 }
 
 const scene = new THREE.Scene();
@@ -69,7 +106,6 @@ for (let x = 0; x < field.size; x++){
     cubeArray[x][y] = new Array();
     for (let z = 0; z < field.size; z++){
       var cellstate = Math.round(Math.random());
-      console.log(cellstate)
       cubeGrid[x][y][z] = cellstate;
 
       let cubeobj = initCube(x,y,z)
