@@ -16,7 +16,7 @@ M means a Moore neighborhood.*/
 //Add gap inbetween cubes
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshStandardMaterial({ color: 0xba5504, roughness: 0.5});
+  var material = new THREE.MeshStandardMaterial({ color: field.color, roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z);
@@ -132,7 +132,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7};
+var field = {size: 7, color: 0x7f4d9f};
 
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
@@ -172,9 +172,23 @@ sizeInput.on('change', function(ev) {
   var {cubeGrid,cubeArray} = initCubeArray();
   console.log(cubeArray);
 });
+const colorInput = automataControls.addInput(field, 'color', {
+  view: 'color',
+  picker: 'inline',
+  expanded: false,
+  label: "Color",
+});
+colorInput.on('change', function(ev) {
+  scene.traverse ( function( child ) {
+    if ( child instanceof THREE.Mesh ) {
+      child.material.color.setHex(field.color);  
+    }
+  });
+});
 
 const camControls = pane.addFolder({
-  title: "Camera Controls"
+  title: "Camera Controls",
+  expanded: false,
 });
 camControls.addInput(renderer, 'toneMappingExposure', {
   label: "Exposure",
