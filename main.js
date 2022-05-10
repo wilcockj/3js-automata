@@ -119,7 +119,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7};
+var field = {size: 7, color: 0xFFFFFF};
 
 var {cubeGrid,cubeArray} = initCubeArray();
 updateGrid(cubeGrid);
@@ -152,6 +152,17 @@ sizeInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
+});
+const colorInput = pane.addInput(field, 'color', {
+  view: 'color',
+  label: "Color",
+});
+colorInput.on('change', function(ev) {
+  scene.traverse ( function( child ) {
+    if ( child instanceof THREE.Mesh ) {
+      child.material.color.setHex(field.color);  
+    }
+  });
 });
 
 const camControls = pane.addFolder({
