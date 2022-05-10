@@ -14,7 +14,7 @@ The 5 means each cell has 5 total states it can be in (state 4 for newly born wh
 M means a Moore neighborhood.*/
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshPhongMaterial( { color: 0xff00ff});
+  var material = new THREE.MeshStandardMaterial({ color: 0x040404, roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
   cube.position.set(x,y,z)
@@ -75,32 +75,28 @@ function updateGrid(cubeGrid){
 
 }
 
+const loader = new RGBELoader();
+loader.load( 'envmap.hdr', function ( texture ) {
+
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = texture;
+  scene.environment = texture;
+
+});
+
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
   canvas: document.querySelector('#bg'),
 });
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1;
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-var pointLight = new THREE.PointLight( 0xffffff );
-pointLight.position.set(1,1,2);
-camera.add(pointLight);
 scene.add(camera);
-
-new RGBELoader()
-					.load( 'envmap.hdr', function ( texture ) {
-
-						texture.mapping = THREE.EquirectangularReflectionMapping;
-
-						scene.background = texture;
-						scene.environment = texture;
-
-					} );
-
-const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-scene.add( light );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
