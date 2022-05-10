@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
-
+// TODO colors based on distance from center
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
   var material = new THREE.MeshPhongMaterial( { color: 0xff00ff});
@@ -29,7 +28,14 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-const loader = new GLTFLoader();
+function updateGrid(cubeGrid){
+  var neighbors = [[-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, -1], [-1, 0, 0], [-1, 0, 1], [-1, 1, -1], [-1, 1, 0], [-1, 1, 1], [0, -1, -1], [0, -1, 0], [0, -1, 1], [0, 0, -1], [0, 0, 1], [0, 1, -1], [0, 1, 0], [0, 1, 1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [1, 0, -1], [1, 0, 0], [1, 0, 1], [1, 1, -1], [1, 1, 0], [1, 1, 1]];
+  var arrcopy = Array.from(cubeGrid);
+  for (var x in neighbors){
+    console.log(neighbors[x]);
+  }  
+}
+
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
@@ -49,7 +55,7 @@ scene.add( light );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 10};
+var field = {size: 5};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
@@ -60,7 +66,9 @@ for (let x = 0; x < field.size; x++){
     cubeGrid[x][y] = new Array();
     cubeArray[x][y] = new Array();
     for (let z = 0; z < field.size; z++){
-      cubeGrid[x][y][z] = 0;
+      var cellstate = Math.round(Math.random());
+      console.log(cellstate)
+      cubeGrid[x][y][z] = cellstate;
 
       let cubeobj = initCube(x,y,z)
 
@@ -69,10 +77,7 @@ for (let x = 0; x < field.size; x++){
     }
   }
 }
-
-var neighbors = [[-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, -1], [-1, 0, 0], [-1, 0, 1], [-1, 1, -1], [-1, 1, 0], [-1, 1, 1], [0, -1, -1], [0, -1, 0], [0, -1, 1], [0, 0, -1], [0, 0, 1], [0, 1, -1], [0, 1, 0], [0, 1, 1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [1, 0, -1], [1, 0, 0], [1, 0, 1], [1, 1, -1], [1, 1, 0], [1, 1, 1]]
-console.log(cubeArray)
-console.log(neighbors)
+updateGrid(cubeGrid);
 
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 20 );
