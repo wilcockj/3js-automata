@@ -4,6 +4,7 @@ import { GUI } from 'dat.gui'
 import Stats from 'stats.js'
 import './style.css'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // TODO colors based on distance from center
 // need to do CA rules as discussed here https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
@@ -74,7 +75,7 @@ function updateGrid(cubeGrid){
   }
 
 }
-
+const loader = new GLTFLoader();
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
