@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -19,11 +19,11 @@ cube1.position.set(0,1,0)
 var outlineMaterial1 = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
 var outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial1 );
 outlineMesh1.position.set(cube1.position.x,cube1.position.y,cube1.position.z);
-outlineMesh1.scale.multiplyScalar(1.05);
+outlineMesh1.scale.multiplyScalar(1.02);
 scene.add( outlineMesh1 );
 
 //controls.update() must be called after any manual changes to the camera's transform
-camera.position.set( 0, 20, 100 );
+camera.position.set( 0, 2, 10 );
 controls.update();
 
 //event listener for window resize
