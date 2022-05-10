@@ -19,7 +19,7 @@ function initCube(x,y,z){
   var material = new THREE.MeshStandardMaterial({ color: field.color, roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube );
-  cube.position.set(x,y,z);
+  cube.position.set(x * field.spacing,y * field.spacing,z * field.spacing);
   return cube.uuid;
 }
 
@@ -132,7 +132,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7, color: 0x7f4d9f};
+var field = {size: 7, color: 0x7f4d9f, spacing : 1};
 
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
@@ -170,8 +170,23 @@ sizeInput.on('change', function(ev) {
   cubeArray = null;
   cubeGrid = null;
   ({cubeGrid,cubeArray} = initCubeArray());
-  console.log(cubeArray);
 });
+const spacingInput = automataControls.addInput(field, 'spacing', {
+  label: "Spacing",
+  min: 1,
+  max: 5,
+  step: .1,
+});
+spacingInput.on('change', function(ev) {
+  //console.log(`change: ${ev.value}`);
+  //clear last cube array and its objs
+  //initCubeArray();
+  deleteCubeArray(cubeArray);
+  cubeArray = null;
+  cubeGrid = null;
+  ({cubeGrid,cubeArray} = initCubeArray());
+});
+
 const colorInput = automataControls.addInput(field, 'color', {
   view: 'color',
   picker: 'inline',
