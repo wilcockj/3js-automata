@@ -12,15 +12,16 @@ const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.inner
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var n = 10;
+var defaultFieldSize = 10;
+var field = {size: defaultFieldSize};
 
 var cubeArray = new Array();
 
-for (let x = 0; x < n; x++){
+for (let x = 0; x < field.size; x++){
   cubeArray[x] = new Array();
-  for (let y = 0; y < n ; y++){
+  for (let y = 0; y < field.size ; y++){
     cubeArray[x][y] = new Array();
-    for (let z = 0; z < n; z++){
+    for (let z = 0; z < field.size; z++){
       cubeArray[x][y][z] = 0;
     }
   }
