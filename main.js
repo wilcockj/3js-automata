@@ -13,6 +13,7 @@ The first 4 indicates that a state 1 cell survives if it has 4 neighbor cells.
 The second 4 indicates that a cell is born in an empty location if it has 4 neighbors.
 The 5 means each cell has 5 total states it can be in (state 4 for newly born which then fades to state 1 and then state 0 for no cell)
 M means a Moore neighborhood.*/
+//Add gap inbetween cubes
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
   var material = new THREE.MeshStandardMaterial({ color: 0xba5504, roughness: 0.5});
@@ -165,6 +166,11 @@ sizeInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
+  deleteCubeArray(cubeArray);
+  cubeArray = null;
+  cubeGrid = null;
+  var {cubeGrid,cubeArray} = initCubeArray();
+  console.log(cubeArray);
 });
 
 const camControls = pane.addFolder({
@@ -189,17 +195,19 @@ function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
-  /*
+  
   var x = getRandomInt(field.size);
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
-  if (cubeArray[x][y][z].cubehandle.visible){
-    cubeArray[x][y][z].cubehandle.visible = false;
+  var cube = scene.getObjectByProperty("uuid", cubeArray[x][y][z]);
+  
+  if (cube.visible){
+    cube.visible = false;
   }
   else{
-    cubeArray[x][y][z].cubehandle.visible = true;
+    cube.visible = true;
   }
-  */
+  
   fpsGraph.end();
 }
 animate();
