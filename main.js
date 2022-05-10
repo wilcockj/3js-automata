@@ -13,7 +13,7 @@ The first 4 indicates that a state 1 cell survives if it has 4 neighbor cells.
 The second 4 indicates that a cell is born in an empty location if it has 4 neighbors.
 The 5 means each cell has 5 total states it can be in (state 4 for newly born which then fades to state 1 and then state 0 for no cell)
 M means a Moore neighborhood.*/
-//Add gap inbetween cubes
+//for gap instead of redrawing just change position with the multiplier, v low priority though
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
   var material = new THREE.MeshStandardMaterial({ color: field.color, roughness: 0.5});
