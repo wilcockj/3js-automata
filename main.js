@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls' 
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
@@ -44,13 +45,18 @@ scene.add( outlineMesh1 );
 camera.position.set( 0, 2, 10 );
 controls.update();
 
+//event listener for window resize
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
 function animate() {
 
 	requestAnimationFrame( animate );
-
-	// required if controls.enableDamping or controls.autoRotate are set to true
 	controls.update();
-
 	renderer.render( scene, camera );
 
 }
