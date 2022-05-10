@@ -56,8 +56,6 @@ var neighbors = [[-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, -1], [-1, 0, 0]
 console.log(cubeArray)
 console.log(neighbors)
 
-
-
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 20 );
 controls.update();
@@ -72,7 +70,7 @@ function onWindowResize(){
 
 const gui = new GUI();
 const mainFolder = gui.addFolder('Controls');
-mainFolder.add(field, 'size', 1, 50);
+mainFolder.add(field, 'size', 1, 50, 1);
 mainFolder.open();
 
 function animate() {
