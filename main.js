@@ -142,11 +142,16 @@ const fpsGraph = pane.addBlade({
 const automataControls = pane.addFolder({
   title: "Automata Controls"
 });
-automataControls.addInput(field, 'size', {
+const sizeInput = automataControls.addInput(field, 'size', {
   label: "Size",
   min: 5,
   max: 30,
   step: 1,
+});
+sizeInput.on('change', function(ev) {
+  //console.log(`change: ${ev.value}`);
+  //clear last cube array and its objs
+  //initCubeArray();
 });
 
 const camControls = pane.addFolder({
