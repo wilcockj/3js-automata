@@ -27,8 +27,7 @@ const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.inner
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var defaultFieldSize = 10;
-var field = {size: defaultFieldSize};
+var field = {size: 10};
 
 var cubeGrid = new Array();
 var cubeArray = new Array();
@@ -73,7 +72,6 @@ function onWindowResize(){
 
 const gui = new GUI();
 const mainFolder = gui.addFolder('Controls');
-var field = {size: 10}
 mainFolder.add(field, 'size', 1, 50);
 mainFolder.open();
 
