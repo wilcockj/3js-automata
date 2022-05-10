@@ -169,7 +169,7 @@ sizeInput.on('change', function(ev) {
   deleteCubeArray(cubeArray);
   cubeArray = null;
   cubeGrid = null;
-  var {cubeGrid,cubeArray} = initCubeArray();
+  ({cubeGrid,cubeArray} = initCubeArray());
   console.log(cubeArray);
 });
 const colorInput = automataControls.addInput(field, 'color', {
