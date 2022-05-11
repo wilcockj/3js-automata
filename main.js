@@ -204,7 +204,8 @@ sizeInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
-  cubeInstances.dispose()
+  scene.remove(cubeInstances);
+  cubeInstances.dispose();
   var {cubeGrid,cubeArray} = initCubeArray();
 });
 const spacingInput = automataControls.addInput(field, 'spacing', {
@@ -217,6 +218,7 @@ spacingInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
+  scene.remove(cubeInstances);
   cubeInstances.dispose();
   var {cubeGrid,cubeArray} = initCubeArray();
 });
