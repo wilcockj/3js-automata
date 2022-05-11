@@ -170,7 +170,7 @@ scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 50, color: 0x4f0000, spacing : 1.1};
+var field = {size: 10, color: 0x4f0000, spacing : 1.1};
 var cubeInstances;
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
@@ -262,18 +262,17 @@ function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
-  /* 
-  var x = getRandomInt(field.size);
-  var y = getRandomInt(field.size);
-  var z = getRandomInt(field.size);
-  var cube = scene.getObjectByProperty("uuid", cubeArray[x][y][z]);
-  if (cube.visible){
-    cube.visible = false;
-  }
-  else{
-    cube.visible = true;
-  }
-  */
+   
+  var i = getRandomInt(Math.pow(field.size,3));
+  const m = new THREE.Matrix4();
+  const dummy = new THREE.Object3D();
+  cubeInstances.getMatrixAt(i,dummy.matrix);
+  console.log(dummy.matrix);
+  const _scale = new THREE.Vector3(2,2,2);
+  dummy.matrix.scale(_scale); 
+  console.log(dummy.matrix);
+  cubeInstances.setMatrixAt(i,dummy.matrix);
+  cubeInstances.instanceMatrix.needsUpdate = true;
   fpsGraph.end();
 }
 animate();
