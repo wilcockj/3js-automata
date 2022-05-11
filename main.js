@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './style.css'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import hdr from './envmap.hdr?url';
 import {Pane} from 'tweakpane';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
@@ -142,6 +143,8 @@ loader.load( hdr, function ( texture ) {
 
 });
 
+const glloader = new GLTFLoader();
+
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
@@ -163,6 +166,16 @@ var field = {size: 10, color: 0x4f0000, spacing : 1.1};
 
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
+/*
+glloader.load( 'models/big.gltf', function ( gltf ) {
+	scene.add( gltf.scene );
+
+}, undefined, function ( error ) {
+
+	console.error( error );
+
+} );
+*/
 updateGrid(cubeGrid);
 
 //event listener for window resize
