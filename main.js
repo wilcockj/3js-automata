@@ -25,7 +25,6 @@ function hexToRgb(hex) {
 function distFromCenter(x,y,z){
   var midx,midy,midz;
   midx = midy = midz = Math.floor(field.size / 2) * field.spacing;
-  console.log(midx);
   var dist = Math.sqrt(Math.pow(x-midx,2) + Math.pow(y-midy,2) + Math.pow(z-midz,2));
   var maxdist = Math.sqrt(3*Math.pow(midx,2));
   return dist/maxdist;
