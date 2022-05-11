@@ -14,12 +14,39 @@ The second 4 indicates that a cell is born in an empty location if it has 4 neig
 The 5 means each cell has 5 total states it can be in (state 4 for newly born which then fades to state 1 and then state 0 for no cell)
 M means a Moore neighborhood.*/
 //for gap instead of redrawing just change position with the multiplier, v low priority though
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+function distFromCenter(x,y,z){
+  var midx,midy,midz;
+  midx = midy = midz = Math.floor(field.size / 2);
+  var dist = Math.sqrt(Math.pow(x-midx,2) + Math.pow(y-midy,2) + Math.pow(z-midz,2));
+  var maxdist = Math.sqrt(3*Math.pow(midx,2));
+  return dist/maxdist;
+}
+
+function distToColor(obj){
+  var pos = obj.position;
+  var distScale = distFromCenter(pos.x,pos.y,pos.z);
+  var rgbcolor = hexToRgb(field.color.toString(16));
+  var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
+  obj.material.color.setRGB(newrgb[0],newrgb[1],newrgb[2]);
+  return obj;
+}
+
 function initCube(x,y,z){
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var material = new THREE.MeshStandardMaterial({ color: field.color, roughness: 0.5});
+
+  var material = new THREE.MeshStandardMaterial({ roughness: 0.5});
   var cube = new THREE.Mesh( geometry, material );
-  scene.add( cube );
   cube.position.set(x * field.spacing,y * field.spacing,z * field.spacing);
+  cube = distToColor(cube);
+  scene.add( cube );
   return cube.uuid;
 }
 
@@ -196,7 +223,7 @@ const colorInput = automataControls.addInput(field, 'color', {
 colorInput.on('change', function(ev) {
   scene.traverse ( function( child ) {
     if ( child instanceof THREE.Mesh ) {
-      child.material.color.setHex(field.color);  
+      distToColor(child);
     }
   });
 });
@@ -229,7 +256,6 @@ function animate() {
   var y = getRandomInt(field.size);
   var z = getRandomInt(field.size);
   var cube = scene.getObjectByProperty("uuid", cubeArray[x][y][z]);
-  
   if (cube.visible){
     cube.visible = false;
   }
