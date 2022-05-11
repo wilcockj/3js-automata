@@ -32,7 +32,7 @@ function distFromCenter(x,y,z){
 
 function distToColor(obj){
   var pos = obj.position;
-  var distScale = distFromCenter(pos.x,pos.y,pos.z);
+  var distScale = distFromCenter(pos.x * field.spacing,pos.y * field.spacing,pos.z * field.spacing);
   var rgbcolor = hexToRgb(field.color.toString(16));
   var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
   obj.material.color.setRGB(newrgb[0],newrgb[1],newrgb[2]);
@@ -40,13 +40,13 @@ function distToColor(obj){
 }
 
 function initCube(x,y,z,count,cubeInstances){
-  var distScale = distFromCenter(x,y,z);
+  var distScale = distFromCenter(x *field.spacing,y*field.spacing,z * field.spacing);
   var rgbcolor = hexToRgb(field.color.toString(16));
   var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
   const color = new THREE.Color();
   color.setRGB(newrgb[0],newrgb[1],newrgb[2]);
   const dummy = new THREE.Object3D();
-  const _position = new THREE.Vector3(x,y,z);
+  const _position = new THREE.Vector3(x * field.spacing,y * field.spacing ,z * field.spacing);
   dummy.position.copy(_position);
   dummy.scale.set(1,1,1);
   dummy.updateMatrix();
@@ -197,17 +197,15 @@ const automataControls = pane.addFolder({
 const sizeInput = automataControls.addInput(field, 'size', {
   label: "Size",
   min: 1,
-  max: 15,
+  max: 50,
   step: 1,
 });
 sizeInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
-  deleteCubeArray(cubeArray);
-  cubeArray = null;
-  cubeGrid = null;
-  ({cubeGrid,cubeArray} = initCubeArray());
+  cubeInstances.dispose()
+  var {cubeGrid,cubeArray} = initCubeArray();
 });
 const spacingInput = automataControls.addInput(field, 'spacing', {
   label: "Spacing",
@@ -219,10 +217,8 @@ spacingInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
-  deleteCubeArray(cubeArray);
-  cubeArray = null;
-  cubeGrid = null;
-  ({cubeGrid,cubeArray} = initCubeArray());
+  cubeInstances.dispose();
+  var {cubeGrid,cubeArray} = initCubeArray();
 });
 
 const colorInput = automataControls.addInput(field, 'color', {
@@ -268,7 +264,7 @@ function animate() {
   const dummy = new THREE.Object3D();
   cubeInstances.getMatrixAt(i,dummy.matrix);
   console.log(dummy.matrix);
-  const _scale = new THREE.Vector3(2,2,2);
+  const _scale = new THREE.Vector3(0,0,0);
   dummy.matrix.scale(_scale); 
   console.log(dummy.matrix);
   cubeInstances.setMatrixAt(i,dummy.matrix);
