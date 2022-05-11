@@ -33,22 +33,26 @@ function distFromCenter(x,y,z){
 
 function distToColor(obj){
   var pos = obj.position;
-  var distScale = distFromCenter(pos.x,pos.y,pos.z);
+  var distScale = distFromCenter(pos.x * field.spacing,pos.y * field.spacing,pos.z * field.spacing);
   var rgbcolor = hexToRgb(field.color.toString(16));
   var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
   obj.material.color.setRGB(newrgb[0],newrgb[1],newrgb[2]);
   return obj;
 }
 
-function initCube(x,y,z){
-  var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-
-  var material = new THREE.MeshStandardMaterial({ roughness: 0.5});
-  var cube = new THREE.Mesh( geometry, material );
-  cube.position.set(x * field.spacing,y * field.spacing,z * field.spacing);
-  cube = distToColor(cube);
-  scene.add( cube );
-  return cube.uuid;
+function initCube(x,y,z,count,cubeInstances){
+  var distScale = distFromCenter(x *field.spacing,y*field.spacing,z * field.spacing);
+  var rgbcolor = hexToRgb(field.color.toString(16));
+  var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
+  const color = new THREE.Color();
+  color.setRGB(newrgb[0],newrgb[1],newrgb[2]);
+  const dummy = new THREE.Object3D();
+  const _position = new THREE.Vector3(x * field.spacing,y * field.spacing ,z * field.spacing);
+  dummy.position.copy(_position);
+  dummy.scale.set(1,1,1);
+  dummy.updateMatrix();
+  cubeInstances.setMatrixAt(count,dummy.matrix);
+  cubeInstances.setColorAt(count,color)
 }
 
 function getRandomInt(max) {
@@ -94,8 +98,14 @@ function updateGrid(cubeGrid){
 }
 
 function initCubeArray(){
+  
+  var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  var material = new THREE.MeshStandardMaterial({ roughness: 0.5});
+  cubeInstances = new THREE.InstancedMesh(geometry,material,Math.pow(field.size,3));
+
   var cubeGrid = new Array();
   var cubeArray = new Array();
+  var count = 0; 
   for (let x = 0; x < field.size; x++){
     cubeGrid[x] = new Array();
     cubeArray[x] = new Array();
@@ -105,14 +115,15 @@ function initCubeArray(){
       for (let z = 0; z < field.size; z++){
         var cellstate = Math.round(Math.random());
         cubeGrid[x][y][z] = cellstate;
+        
+        initCube(x,y,z,count,cubeInstances);
 
-        let cubeobj = initCube(x,y,z)
-
-        cubeArray[x][y][z] = cubeobj;
-
+        cubeArray[x][y][z] = count;
+        count += 1;
       }
     }
   }
+  scene.add(cubeInstances);
   var obj = {
     cubeGrid: cubeGrid,
     cubeArray: cubeArray
@@ -163,7 +174,7 @@ scene.add(camera);
 const controls = new OrbitControls( camera, renderer.domElement );
 
 var field = {size: 10, color: 0x4f0000, spacing : 1.1};
-
+var cubeInstances;
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
 /*
@@ -199,17 +210,16 @@ const automataControls = pane.addFolder({
 const sizeInput = automataControls.addInput(field, 'size', {
   label: "Size",
   min: 1,
-  max: 15,
+  max: 50,
   step: 1,
 });
 sizeInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
-  deleteCubeArray(cubeArray);
-  cubeArray = null;
-  cubeGrid = null;
-  ({cubeGrid,cubeArray} = initCubeArray());
+  scene.remove(cubeInstances);
+  cubeInstances.dispose();
+  var {cubeGrid,cubeArray} = initCubeArray();
 });
 const spacingInput = automataControls.addInput(field, 'spacing', {
   label: "Spacing",
@@ -221,10 +231,9 @@ spacingInput.on('change', function(ev) {
   //console.log(`change: ${ev.value}`);
   //clear last cube array and its objs
   //initCubeArray();
-  deleteCubeArray(cubeArray);
-  cubeArray = null;
-  cubeGrid = null;
-  ({cubeGrid,cubeArray} = initCubeArray());
+  scene.remove(cubeInstances);
+  cubeInstances.dispose();
+  var {cubeGrid,cubeArray} = initCubeArray();
 });
 
 const colorInput = automataControls.addInput(field, 'color', {
@@ -264,18 +273,17 @@ function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
 	renderer.render( scene, camera );
-  
-  var x = getRandomInt(field.size);
-  var y = getRandomInt(field.size);
-  var z = getRandomInt(field.size);
-  var cube = scene.getObjectByProperty("uuid", cubeArray[x][y][z]);
-  if (cube.visible){
-    cube.visible = false;
-  }
-  else{
-    cube.visible = true;
-  }
-  
+   
+  var i = getRandomInt(Math.pow(field.size,3));
+  const m = new THREE.Matrix4();
+  const dummy = new THREE.Object3D();
+  cubeInstances.getMatrixAt(i,dummy.matrix);
+  console.log(dummy.matrix);
+  const _scale = new THREE.Vector3(0,0,0);
+  dummy.matrix.scale(_scale); 
+  console.log(dummy.matrix);
+  cubeInstances.setMatrixAt(i,dummy.matrix);
+  cubeInstances.instanceMatrix.needsUpdate = true;
   fpsGraph.end();
 }
 animate();
