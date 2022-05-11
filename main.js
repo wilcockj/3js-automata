@@ -154,12 +154,12 @@ renderer.toneMappingExposure = 1.3;
 renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-camera.position.set( 0, 20, 20 );
+camera.position.set( 20, 20, 20 );
 scene.add(camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-var field = {size: 7, color: 0x7f4d9f, spacing : 1};
+var field = {size: 10, color: 0x4f0000, spacing : 1.1};
 
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
@@ -185,8 +185,8 @@ const automataControls = pane.addFolder({
 });
 const sizeInput = automataControls.addInput(field, 'size', {
   label: "Size",
-  min: 5,
-  max: 30,
+  min: 1,
+  max: 15,
   step: 1,
 });
 sizeInput.on('change', function(ev) {
@@ -235,7 +235,7 @@ const camControls = pane.addFolder({
 camControls.addInput(renderer, 'toneMappingExposure', {
   label: "Exposure",
   min: 0,
-  max: 3,
+  max: 2,
   step: 0.1,
 });
 camControls.addInput(camera, 'fov', {
