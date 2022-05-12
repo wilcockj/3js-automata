@@ -123,8 +123,7 @@ function initCubeArray(){
       cubeGrid[x][y] = new Array();
       cubeArray[x][y] = new Array();
       for (let z = 0; z < field.size; z++){
-        var cellstate = 0;
-        cubeGrid[x][y][z] = cellstate;
+        cubeGrid[x][y][z] = 0;
         
         initCube(x,y,z,count,cubeInstances);
 
@@ -274,12 +273,9 @@ function animate() {
   const m = new THREE.Matrix4();
   const dummy = new THREE.Object3D();
   cubeInstances.getMatrixAt(i,dummy.matrix);
-  console.log(dummy.matrix);
   //scale cube /100 and then check first element of matrix
   //to see if it is "off" and scale *100 to return to normal
-  const _scale = new THREE.Vector3(.01,.01,.01);
-  dummy.matrix.scale(_scale); 
-  console.log(dummy.matrix);
+  dummy.matrix.setPosition(0,0,-1000); 
   cubeInstances.setMatrixAt(i,dummy.matrix);
   cubeInstances.instanceMatrix.needsUpdate = true;
   fpsGraph.end();
