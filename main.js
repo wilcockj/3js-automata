@@ -14,6 +14,11 @@ The second 4 indicates that a cell is born in an empty location if it has 4 neig
 The 5 means each cell has 5 total states it can be in (state 4 for newly born which then fades to state 1 and then state 0 for no cell)
 M means a Moore neighborhood.*/
 //for gap instead of redrawing just change position with the multiplier, v low priority though
+
+const survivalThreshold = 4;
+const birthThreshold = 4;
+const lifespan = 5;
+
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -30,6 +35,7 @@ function distFromCenter(x,y,z){
   return dist/maxdist;
 }
 
+// TODO: if r, g, or b is 0, for some reason the cube wont render.
 function distToColor(obj){
   var pos = obj.position;
   var distScale = distFromCenter(pos.x * field.spacing,pos.y * field.spacing,pos.z * field.spacing);
@@ -40,7 +46,7 @@ function distToColor(obj){
 }
 
 function initCube(x,y,z,count,cubeInstances){
-  var distScale = distFromCenter(x *field.spacing,y*field.spacing,z * field.spacing);
+  var distScale = distFromCenter(x * field.spacing, y * field.spacing, z * field.spacing);
   var rgbcolor = hexToRgb(field.color.toString(16));
   var newrgb = [(rgbcolor.r/255*distScale),(rgbcolor.g/255*distScale),(rgbcolor.b/255*distScale)];
   const color = new THREE.Color();
@@ -89,7 +95,12 @@ function updateGrid(cubeGrid){
     for (var y in cubeGrid[x]){
       for (var z in cubeGrid[x][y]){
         var count = checkNeighbors(cubeGrid, x, y, z);
-        //console.log(count);
+          if !(cubeGrid[x][y][z] == 1 && count >= survivalThreshold) {
+            arrcopy[x][y][z] -= 1; 
+          }
+          else if (cubeGrid[x][y][z] == 0 && count >= birthThreshold) {
+            arrcopy[x][y][z] = lifespan - 1;
+          }
         }
       }
   }
@@ -112,7 +123,7 @@ function initCubeArray(){
       cubeGrid[x][y] = new Array();
       cubeArray[x][y] = new Array();
       for (let z = 0; z < field.size; z++){
-        var cellstate = Math.round(Math.random());
+        var cellstate = 0;
         cubeGrid[x][y][z] = cellstate;
         
         initCube(x,y,z,count,cubeInstances);
