@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './style.css'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import hdr from './envmap.hdr?url';
 import {Pane} from 'tweakpane';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
@@ -154,8 +153,6 @@ loader.load( hdr, function ( texture ) {
 
 });
 
-const glloader = new GLTFLoader();
-
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ 
   antialias: true,
@@ -177,16 +174,6 @@ var field = {size: 10, color: 0x4f0000, spacing : 1.1};
 var cubeInstances;
 var {cubeGrid,cubeArray} = initCubeArray();
 console.log(cubeArray);
-/*
-glloader.load( 'models/big.gltf', function ( gltf ) {
-	scene.add( gltf.scene );
-
-}, undefined, function ( error ) {
-
-	console.error( error );
-
-} );
-*/
 updateGrid(cubeGrid);
 
 //event listener for window resize
@@ -243,11 +230,9 @@ const colorInput = automataControls.addInput(field, 'color', {
   label: "Color",
 });
 colorInput.on('change', function(ev) {
-  scene.traverse ( function( child ) {
-    if ( child instanceof THREE.Mesh ) {
-      distToColor(child);
-    }
-  });
+  scene.remove(cubeInstances);
+  cubeInstances.dispose();
+  var {cubeGrid,cubeArray} = initCubeArray();
 });
 
 const camControls = pane.addFolder({
@@ -279,7 +264,9 @@ function animate() {
   const dummy = new THREE.Object3D();
   cubeInstances.getMatrixAt(i,dummy.matrix);
   console.log(dummy.matrix);
-  const _scale = new THREE.Vector3(0,0,0);
+  //scale cube /100 and then check first element of matrix
+  //to see if it is "off" and scale *100 to return to normal
+  const _scale = new THREE.Vector3(.01,.01,.01);
   dummy.matrix.scale(_scale); 
   console.log(dummy.matrix);
   cubeInstances.setMatrixAt(i,dummy.matrix);
