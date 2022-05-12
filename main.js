@@ -112,8 +112,8 @@ function initCubeArray(){
       cubeGrid[x][y] = new Array();
       cubeArray[x][y] = new Array();
       for (let z = 0; z < field.size; z++){
-        var cellstate = Math.round(Math.random());
-        cubeGrid[x][y][z] = cellstate;
+        //var cellstate = Math.round(Math.random());
+        cubeGrid[x][y][z] = 0;
         
         initCube(x,y,z,count,cubeInstances);
 
