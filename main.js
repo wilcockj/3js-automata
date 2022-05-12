@@ -95,11 +95,18 @@ function updateGrid(cubeGrid){
     for (var y in cubeGrid[x]){
       for (var z in cubeGrid[x][y]){
         var count = checkNeighbors(cubeGrid, x, y, z);
-          if !(cubeGrid[x][y][z] == 1 && count >= survivalThreshold) {
-            arrcopy[x][y][z] -= 1; 
+          if (cubeGrid[x][y][z] == 1 && count == survivalThreshold) {
+              // 
           }
-          else if (cubeGrid[x][y][z] == 0 && count >= birthThreshold) {
+          else{
+            arrcopy[x][y][z] -= 1;
+          }
+          
+          if (cubeGrid[x][y][z] == 0 && count >= birthThreshold) {
             arrcopy[x][y][z] = lifespan - 1;
+          }
+          if (cubeGrid[x][y][z] > 1){
+            arrcopy[x][y][z] -= 1;
           }
         }
       }
