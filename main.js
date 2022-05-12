@@ -95,6 +95,8 @@ function updateGrid(cubeGrid){
     for (var y in cubeGrid[x]){
       for (var z in cubeGrid[x][y]){
         var count = checkNeighbors(cubeGrid, x, y, z);
+          console.log(count);
+          console.log(cubeGrid[x][y][z]);
           if (cubeGrid[x][y][z] == 1 && count == survivalThreshold) {
               // 
           }
@@ -108,9 +110,12 @@ function updateGrid(cubeGrid){
           if (cubeGrid[x][y][z] > 1){
             arrcopy[x][y][z] -= 1;
           }
+          console.log(arrcopy[x][y][z]);
         }
       }
   }
+  cubeGrid = arrcopy;
+  return cubeGrid;
 
 }
 
@@ -285,6 +290,8 @@ function animate() {
   dummy.matrix.setPosition(0,0,-1000); 
   cubeInstances.setMatrixAt(i,dummy.matrix);
   cubeInstances.instanceMatrix.needsUpdate = true;
+  cubeGrid = updateGrid(cubeGrid);
+  console.log(cubeGrid);
   fpsGraph.end();
 }
 animate();
