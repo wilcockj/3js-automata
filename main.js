@@ -265,8 +265,7 @@ function animate() {
   cubeInstances.getMatrixAt(i,dummy.matrix);
   //scale cube /100 and then check first element of matrix
   //to see if it is "off" and scale *100 to return to normal
-  const _scale = new THREE.Vector3(.01,.01,.01);
-  dummy.matrix.scale(_scale); 
+  dummy.matrix.setPosition(0,0,-1000); 
   cubeInstances.setMatrixAt(i,dummy.matrix);
   cubeInstances.instanceMatrix.needsUpdate = true;
   fpsGraph.end();
